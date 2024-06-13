@@ -1,13 +1,21 @@
+const bodyParser = require('body-parser')
+const multer = require('multer')
+const upload = multer()
 const express = require('express')
-const db = require('./db');
+
 const app = express()
 const port = 3000
+const db = require('./db')
 
-app.get('/', (req, res) => {
-  res.send('Init')
-})
+const meetupRoutes = require('./routes/meetup');
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(upload.array());
+
+app.use('/', meetupRoutes);
 
 db.sync({force: false})
 .then(() => {
-  app.listen(port);
-});
+  app.listen(port)
+})
