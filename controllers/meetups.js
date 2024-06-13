@@ -1,6 +1,6 @@
 const Meetup = require('../models/meetup')
 
-const meetup = {
+module.exports = {
     create: async (req, res) => {
         let {name, description, time, place} = req.body
 
@@ -20,11 +20,7 @@ const meetup = {
     delete: async (req, res) => {
         let id = +req.params.id
 
-        await Meetup.destroy({
-            where: {
-              firstName: 'Jane',
-            },
-          });
+        await Meetup.destroy({where: {id: id}});
         
         res.send(200) 
     },
@@ -42,6 +38,4 @@ const meetup = {
         res.send(JSON.stringify({meetups}));
     }
 }
-
-module.exports = meetup
 
