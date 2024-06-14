@@ -1,5 +1,6 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const { Sequelize, DataTypes } = require('sequelize')
+const sequelize = require('../db')
+const Tag = require("./tag")
 
 const Meetup = sequelize.define(
     "meetup",
@@ -25,5 +26,8 @@ const Meetup = sequelize.define(
         timestamps: false,
     },
 )
+
+Meetup.belongsToMany(Tag, { through: 'meetup_tag' });
+Tag.belongsToMany(Meetup, { through: 'meetup_tag' });
 
 module.exports = Meetup
