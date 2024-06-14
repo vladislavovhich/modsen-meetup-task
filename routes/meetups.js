@@ -7,7 +7,7 @@ const controllers = require("../controllers/meetups")
 const router = express.Router()
 
 router.get("/:id", middleware(schemas.query, 'params'), controllers.get)
-router.get("/", controllers.getAll)
+router.get("/", middleware(schemas.meetupAllQuery, 'query'), controllers.getAll)
 router.put("/:id", middleware(schemas.query, 'params'), middleware(schemas.meetup, 'body'), controllers.update)
 router.post("/", middleware(schemas.meetup, 'body'), controllers.create)
 router.delete("/:id", middleware(schemas.query, 'params'), controllers.delete)

@@ -51,11 +51,26 @@ module.exports = {
         res.json({meetup})
     },
     getAll: async (req, res) => {
-        let meetups = await Meetup.findAll({
-            include: Tag
-        });
+        try { 
+            let sortFields = [["nameSort", req.query.nameSort], ["descriptionSort", req.query.descriptionSort], ["timeSort", req.query.timeSort], ["placeSort", req.query.placeSort]]
+            let filterFields = [["name", req.query.name], ["description", req.query.description], ["time", req.query.time], ["place", req.query.place]]
+            let offset = req.query.offset, limit = req.query.limit
 
-        res.json({meetups})
+            sortFields = sortFields.map(field => [field[0].split("Sort")[0], field[1]]).filter(field => !!field[1])
+            filterFields = Object.fromEntries(filterFields.filter(field => field[1]))
+
+            let meetups = await Meetup.findAll({
+                include: Tag,
+                order: sortFields,
+                limit,
+                offset,
+                where: filterFields
+            });
+
+            res.json({meetups})
+        } catch {
+            res.send(400)
+        }
     }
 }
 
