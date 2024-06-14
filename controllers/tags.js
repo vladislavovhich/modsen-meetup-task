@@ -6,8 +6,7 @@ module.exports = {
 
         let tag = await Tag.create({name})
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({tag}));
+        res.json({tag});
     },
     update: async (req, res) => {
         let id = +req.params.id
@@ -28,14 +27,12 @@ module.exports = {
         let id = +req.params.id
         let tag = await Tag.findByPk(id)
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({tag}));
+        res.json({tag})
     },
     getAll: async (req, res) => {
         let tags = await Tag.findAll();
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({tags}));
+        res.json({tags});
     }
 }
 

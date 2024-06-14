@@ -15,8 +15,7 @@ module.exports = {
             await meetup.addTags(tags)
         }
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({meetup}));
+        res.json({meetup})
     },
     update: async (req, res) => {
         let id = +req.params.id
@@ -49,16 +48,14 @@ module.exports = {
             include: Tag
         })
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({meetup}));
+        res.json({meetup})
     },
     getAll: async (req, res) => {
         let meetups = await Meetup.findAll({
             include: Tag
         });
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({meetups}));
+        res.json({meetups})
     }
 }
 
