@@ -1,5 +1,3 @@
-const Joi = require('joi'); 
-
 const validation = (schema, property) => { 
     return (req, res, next) => { 
         const { error } = schema.validate(req[property]); 
