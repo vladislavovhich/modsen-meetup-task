@@ -6,3 +6,5 @@ const sequelize = new Sequelize('meetups_db', 'postgres', '55155', {
 });
 
 module.exports = sequelize
+
+

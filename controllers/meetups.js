@@ -4,6 +4,7 @@ const Tag = require('../models/tag')
 module.exports = {
     create: async (req, res) => {
         let {name, description, time, place, tags} = req.body
+        let user = await req.user
         
         let meetup = await Meetup.create({name, description, time, place, tags})
 
@@ -14,6 +15,8 @@ module.exports = {
 
             await meetup.addTags(tags)
         }
+
+        await meetup.setUser(user)
 
         res.json({meetup})
     },

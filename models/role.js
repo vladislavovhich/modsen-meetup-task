@@ -1,9 +1,9 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const sequelize = require('../db')
-const User = require("./user")
+const User = require('./user')
 
-const Tag = sequelize.define(
-    "tag",
+const Role = sequelize.define(
+    "role",
     {
         name: {
             type: DataTypes.STRING,
@@ -15,7 +15,7 @@ const Tag = sequelize.define(
     },
 )
 
-Tag.belongsTo(User)
-User.hasMany(Tag)
+User.belongsTo(Role)
+Role.hasMany(User)
 
-module.exports = Tag
+module.exports = Role

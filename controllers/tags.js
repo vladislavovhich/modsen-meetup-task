@@ -3,8 +3,11 @@ const Tag = require('../models/tag')
 module.exports = {
     create: async (req, res) => {
         let {name} = req.body
+        let user = await req.user
 
         let tag = await Tag.create({name})
+
+        await tag.setUser(user)
 
         res.json({tag});
     },
