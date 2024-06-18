@@ -7,8 +7,23 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Endpoint"
+    },
+    {
+      "name": "Meetup",
+      "description": "Endpoint"
+    },
+    {
+      "name": "Tag",
+      "description": "Endpoint"
+    }
+  ],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -19,6 +34,9 @@
   "paths": {
     "/api/meetups/{id}": {
       "get": {
+        "tags": [
+          "Meetup"
+        ],
         "description": "",
         "parameters": [
           {
@@ -38,6 +56,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Meetup"
+        ],
         "description": "",
         "parameters": [
           {
@@ -77,10 +98,16 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       },
       "delete": {
+        "tags": [
+          "Meetup"
+        ],
         "description": "",
         "parameters": [
           {
@@ -96,12 +123,18 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
     },
     "/api/meetups/": {
       "get": {
+        "tags": [
+          "Meetup"
+        ],
         "description": "",
         "parameters": [
           {
@@ -165,6 +198,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Meetup"
+        ],
         "description": "",
         "parameters": [
           {
@@ -198,12 +234,18 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
     },
     "/api/tags/{id}": {
       "get": {
+        "tags": [
+          "Tag"
+        ],
         "description": "",
         "parameters": [
           {
@@ -223,6 +265,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Tag"
+        ],
         "description": "",
         "parameters": [
           {
@@ -250,10 +295,16 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       },
       "delete": {
+        "tags": [
+          "Tag"
+        ],
         "description": "",
         "parameters": [
           {
@@ -269,12 +320,18 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
     },
     "/api/tags/": {
       "get": {
+        "tags": [
+          "Tag"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -283,6 +340,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Tag"
+        ],
         "description": "",
         "parameters": [
           {
@@ -304,12 +364,18 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
     },
     "/api/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -329,9 +395,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
             "description": "Bad Request"
           }
@@ -340,6 +403,9 @@
     },
     "/api/auth/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -353,6 +419,9 @@
                 },
                 "password": {
                   "example": "any"
+                },
+                "roleId": {
+                  "example": "any"
                 }
               }
             }
@@ -361,17 +430,182 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
     },
     "/api/auth/logout": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "default": {
             "description": ""
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "React.js"
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "email": {
+              "type": "string",
+              "example": "example@email.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "password_example"
+            },
+            "role": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "student"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Meetup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Meetup"
+        },
+        "description": {
+          "type": "string",
+          "example": "JS Backend"
+        },
+        "place": {
+          "type": "string",
+          "example": "Vitebsk"
+        },
+        "time": {
+          "type": "string",
+          "example": "2024-04-22T21:00:00.000Z"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "React.js"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password_example"
+                  },
+                  "role": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "student"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "email": {
+          "type": "string",
+          "example": "example@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password_example"
+        },
+        "role": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "student"
+            }
+          }
+        }
+      }
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "student"
         }
       }
     }

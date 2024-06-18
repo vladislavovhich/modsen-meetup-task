@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require("passport")
 
 const isValid = require("../middleware/validation")
-const schemas = require("../schemas")
+const schemas = require("../config/schemas")
 const Meetup = require("../models/meetup")
 
 const controllers = require("../controllers/meetups")

@@ -8,9 +8,13 @@ const jwtStrategy = require("./config/passport")
 const passport = require("passport")
 const cookieParser = require("cookie-parser")
 
-const app = express()
-const db = require("./db")
+const db = require("./config/db")
 const Role = require("./models/role")
+const User = require("./models/user")
+const Tag = require("./models/tag")
+const Meetup = require("./models/meetup")
+
+const app = express()
 
 app.use(cookieParser())
 app.use(express.json())

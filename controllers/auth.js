@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt')
 
 module.exports = {
     register: async (req, res) => {
+        // #swagger.tags = ['Auth']
+
         let {email, password, roleId} = req.body
         let role = await Role.findByPk(roleId)
 
@@ -35,6 +37,8 @@ module.exports = {
     },
 
     login: async (req, res) => {
+        // #swagger.tags = ['Auth']
+
         let {email, password} = req.body
 
         let user = await User.findOne({
@@ -61,6 +65,8 @@ module.exports = {
     },
 
     logout: async (req, res) => {
+        // #swagger.tags = ['Auth']
+        
         res.clearCookie('jwt').status(200).json({
             message: 'You have logged out'
         })

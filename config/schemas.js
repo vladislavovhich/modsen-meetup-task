@@ -14,6 +14,15 @@ const schemas = {
     query:  Joi.object({
         id: Joi.number().min(1).required()  
     }),
+    login: Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().min(5).alphanum().required()
+    }),
+    register: Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().min(5).alphanum().required(),
+        roleId: Joi.number().integer().valid(1, 2).required(),
+    }),
     meetupAllQuery: Joi.object({
         nameSort: Joi.string().valid("ASC", "DESC").insensitive().allow(null),
         placeSort: Joi.string().valid("ASC", "DESC").insensitive().allow(null),

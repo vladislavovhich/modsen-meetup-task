@@ -3,6 +3,8 @@ const Tag = require('../models/tag')
 
 module.exports = {
     create: async (req, res) => {
+        // #swagger.tags = ['Meetup']
+
         let {name, description, time, place, tags} = req.body
         let user = await req.user
         
@@ -21,6 +23,8 @@ module.exports = {
         res.json({meetup})
     },
     update: async (req, res) => {
+        // #swagger.tags = ['Meetup']
+
         let id = +req.params.id
         let {name, description, time, place, tags} = req.body
         let meetup = await Meetup.findByPk(id)
@@ -39,6 +43,8 @@ module.exports = {
         
     },
     delete: async (req, res) => {
+        // #swagger.tags = ['Meetup']
+
         let id = +req.params.id
 
         await Meetup.destroy({where: {id: id}});
@@ -46,6 +52,8 @@ module.exports = {
         res.send(200) 
     },
     get: async (req, res) => {
+        // #swagger.tags = ['Meetup']
+
         let id = +req.params.id
         let meetup = await Meetup.findByPk(id, {
             include: Tag
@@ -54,6 +62,8 @@ module.exports = {
         res.json({meetup})
     },
     getAll: async (req, res) => {
+        // #swagger.tags = ['Meetup']
+        
         try { 
             let sortFields = [["nameSort", req.query.nameSort], ["descriptionSort", req.query.descriptionSort], ["timeSort", req.query.timeSort], ["placeSort", req.query.placeSort]]
             let filterFields = [["name", req.query.name], ["description", req.query.description], ["time", req.query.time], ["place", req.query.place]]

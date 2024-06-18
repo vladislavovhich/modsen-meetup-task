@@ -1,14 +1,20 @@
 const express = require('express');
 const passport = require("passport")
 
-const middleware = require("../middleware/validation")
-const schemas = require("../schemas")
+const isValid = require("../middleware/validation")
+const schemas = require("../config/schemas")
 
 const router = express.Router()
 const controllers = require("../controllers/auth")
 
-router.post("/login", controllers.login)
-router.post("/register", controllers.register)
+router.post("/login", 
+    isValid(schemas.login, 'body'), 
+    controllers.login)
+
+router.post("/register", 
+    isValid(schemas.register, 'body'), 
+    controllers.register)
+
 router.get("/logout", passport.authenticate('jwt', { session: false }), controllers.logout)
 
 module.exports = router
