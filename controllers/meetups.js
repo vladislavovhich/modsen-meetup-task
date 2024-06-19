@@ -1,89 +1,75 @@
-const Meetup = require('../models/meetup')
-const Tag = require('../models/tag')
+const CreateMeetupDto = require('../dto/CreateMeetupDto')
+const GetMeetupsDto = require('../dto/GetMeetupsDto')
+const UpdateMeetupDto = require('../dto/UpdateMeetupDto')
+
+const MeetupService = require('../services/MeetupService')
 
 module.exports = {
     create: async (req, res) => {
         // #swagger.tags = ['Meetup']
 
-        let {name, description, time, place, tags} = req.body
         let user = await req.user
+        let createMeetupDto = new CreateMeetupDto({user, ...req.body})
+
+        createMeetupDto.tags = !!req.body.tags ? req.body.tags.map(tag => +tag) : []
+
+        let meetup = await MeetupService.create(createMeetupDto)
         
-        let meetup = await Meetup.create({name, description, time, place, tags})
-
-        if (!!tags && tags.length != 0) {
-            for (let i = 0; i < tags.length; i++) {
-                tags[i] = await Tag.findByPk(+tags[i])
-            }
-
-            await meetup.addTags(tags)
-        }
-
-        await meetup.setUser(user)
-
-        res.json({meetup})
+        res.status(200).json({meetup})
     },
+
     update: async (req, res) => {
         // #swagger.tags = ['Meetup']
 
-        let id = +req.params.id
-        let {name, description, time, place, tags} = req.body
-        let meetup = await Meetup.findByPk(id)
+        let updateMeetupDto = new UpdateMeetupDto({id: +req.params.id, ...req.body})
 
-        await meetup.update({name, description, time, place})
+        updateMeetupDto.tags = !!req.body.tags ? req.body.tags.map(tag => +tag) : []
 
-        if (!!tags && tags.length != 0) {
-            for (let i = 0; i < tags.length; i++) {
-                tags[i] = await Tag.findByPk(+tags[i])
-            }
+        let meetup = await MeetupService.update(updateMeetupDto)
 
-            await meetup.setTags(tags)
+        if (!meetup) {
+            res.status(400).json({message: "Meetup not found"})
         }
 
-        res.send(200) 
-        
+        res.status(200).json(meetup)
     },
+    
     delete: async (req, res) => {
         // #swagger.tags = ['Meetup']
 
-        let id = +req.params.id
+        let result = await MeetupService.delete(+req.params.id)
 
-        await Meetup.destroy({where: {id: id}});
-        
+        if (!result) {
+            res.status(400).json({message: "Meetup not found"})
+        }
+
         res.send(200) 
     },
     get: async (req, res) => {
         // #swagger.tags = ['Meetup']
 
-        let id = +req.params.id
-        let meetup = await Meetup.findByPk(id, {
-            include: Tag
-        })
+        let meetup = await MeetupService.get(+req.params.id)
 
-        res.json({meetup})
+        if (!meetup) {
+            res.status(400).json({message: "Meetup not found"})
+        }
+
+        res.status(200).json({meetup})
     },
+
     getAll: async (req, res) => {
         // #swagger.tags = ['Meetup']
-        
-        try { 
-            let sortFields = [["nameSort", req.query.nameSort], ["descriptionSort", req.query.descriptionSort], ["timeSort", req.query.timeSort], ["placeSort", req.query.placeSort]]
-            let filterFields = [["name", req.query.name], ["description", req.query.description], ["time", req.query.time], ["place", req.query.place]]
-            let offset = req.query.offset, limit = req.query.limit
+  
+        let sortFields = [["nameSort", req.query.nameSort], ["descriptionSort", req.query.descriptionSort], ["timeSort", req.query.timeSort], ["placeSort", req.query.placeSort]]
+        let filterFields = [["name", req.query.name], ["description", req.query.description], ["time", req.query.time], ["place", req.query.place]]
+        let offset = req.query.offset, limit = req.query.limit
 
-            sortFields = sortFields.map(field => [field[0].split("Sort")[0], field[1]]).filter(field => !!field[1])
-            filterFields = Object.fromEntries(filterFields.filter(field => field[1]))
+        sortFields = sortFields.map(field => [field[0].split("Sort")[0], field[1]]).filter(field => !!field[1])
+        filterFields = Object.fromEntries(filterFields.filter(field => field[1]))
 
-            let meetups = await Meetup.findAll({
-                include: Tag,
-                order: sortFields,
-                limit,
-                offset,
-                where: filterFields
-            });
+        let meetups = await MeetupService.getAll(new GetMeetupsDto({sortFields, filterFields, offset, limit}))
 
-            res.json({meetups})
-        } catch {
-            res.send(400)
-        }
+        res.status(200).json({meetups})
     }
 }
 

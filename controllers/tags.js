@@ -1,51 +1,61 @@
-const Tag = require('../models/tag')
+const TagService = require("../services/TagService")
+const CreateTagDto = require("../dto/CreateTagDto")
+const UpdateTagDto = require("../dto/CreateTagDto")
 
 module.exports = {
     create: async (req, res) => {
         // #swagger.tags = ['Tag']
 
-        let {name} = req.body
         let user = await req.user
+        let createTagDto = new CreateTagDto({user, ...req.body})
 
-        let tag = await Tag.create({name})
+        let tag = await TagService.create(createTagDto)
 
-        await tag.setUser(user)
-
-        res.json({tag});
+        res.status(200).json({tag})
     },
+
     update: async (req, res) => {
         // #swagger.tags = ['Tag']
 
-        let id = +req.params.id
-        let {name} = req.body
+        let tag = await TagService.update(new UpdateTagDto({id: +req.params.id, ...req.body}))
 
-        await Tag.update({name}, {where: {id: id}})
+        if (!tag) {
+            res.status(400).json({message: "Tag not found"})
+        }
 
-        res.send(200) 
+        res.status(200).json({tag})
     },
+
     delete: async (req, res) => {
         // #swagger.tags = ['Tag']
         
-        let id = +req.params.id
+        let result = await TagService.delete(+req.params.id)
 
-        await Tag.destroy({where: {id: id}});
-        
+        if (!result) {
+            res.status(400).json({message: "Tag not found"})
+        }
+
         res.send(200) 
     },
+
     get: async (req, res) => {
         // #swagger.tags = ['Tag']
 
-        let id = +req.params.id
-        let tag = await Tag.findByPk(id)
+        let tag = await TagService.get(+req.params.id)
 
-        res.json({tag})
+        if (!tag) {
+            res.status(400).json({message: "Tag not found"})
+        }
+
+        res.status(200).json({tag})
     },
+
     getAll: async (req, res) => {
         // #swagger.tags = ['Tag']
         
-        let tags = await Tag.findAll();
+        let tags = await TagService.getAll()
 
-        res.json({tags});
+        res.status(200).json({tags})
     }
 }
 

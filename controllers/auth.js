@@ -2,38 +2,25 @@ const User = require('../models/user')
 const Role = require('../models/role')
 
 const jwt = require('jsonwebtoken')
-const passport = require('passport')
 
 const bcrypt = require('bcrypt')
+
+const UserService = require("../services/UserService")
+const CreateUserDto = require('../dto/CreateUserDto')
 
 module.exports = {
     register: async (req, res) => {
         // #swagger.tags = ['Auth']
 
-        let {email, password, roleId} = req.body
-        let role = await Role.findByPk(roleId)
+        let user = await UserService.create(new CreateUserDto(req.body))
 
-        if (!role) {
+        if (!user) {
             return res.status(400).json({
-                message: `Incorrect role number: ${roleId}`
+                message: `User already exists`
             })
         }
 
-        let userExist = await User.findOne({where: {email}})
-
-        if (userExist) {
-            return res.status(400).json({
-                message: `There is a user with the same email: ${email}`
-            })
-        }
-
-        password = await bcrypt.hash(password, 10)
-
-        let user = await User.create({ email, password})
-
-        await user.setRole(role)
-
-        return res.json(user)
+        return res.status(200).json(user)
     },
 
     login: async (req, res) => {
@@ -41,9 +28,7 @@ module.exports = {
 
         let {email, password} = req.body
 
-        let user = await User.findOne({
-            where: {email}
-        })
+        let user = await UserService.findByEmail(email)
 
         if (!user) {
             return res.status(400).json({
