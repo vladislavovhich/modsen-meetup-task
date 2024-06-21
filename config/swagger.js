@@ -7,7 +7,7 @@ const swaggerDocument = {
         version: '1.0.0',
         description: 'Meetup API Information',
     },
-    host: process.env.DB_HOST,
+    host: process.env.HOST_NAME,
     basePath: "/",
     schemes: ["http", "https"],
     consumes: ["application/json"],
