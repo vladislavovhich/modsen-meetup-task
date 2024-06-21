@@ -7,6 +7,7 @@ const swaggerjsonFilePath = require("./docs/swagger.json");
 const jwtStrategy = require("./config/passport")
 const passport = require("passport")
 const cookieParser = require("cookie-parser")
+const cors = require('cors')
 
 const db = require("./config/db")
 const Role = require("./models/role")
@@ -16,6 +17,7 @@ const Meetup = require("./models/meetup")
 
 const app = express()
 
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
