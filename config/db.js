@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('modsenmeetups_db', 'modsenmeetupsuser', 'ouHzgAEBUUqSpNTm84oeTEo7dAnyNSHP', {
-    host: 'dpg-cpqmgiaj1k6c73bj917g-a',
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
     dialect: 'postgres'
 })
 
