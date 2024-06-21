@@ -8,7 +8,6 @@ const jwtStrategy = require("./config/passport")
 const passport = require("passport")
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
-require('dotenv').config()
 
 const db = require("./config/db")
 const Role = require("./models/role")

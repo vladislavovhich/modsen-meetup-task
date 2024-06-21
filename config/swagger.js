@@ -1,5 +1,6 @@
 const generateSwagger = require("swagger-autogen")();
-    
+require('dotenv').config()
+   
 const swaggerDocument = {
     info: {
         title: 'Meetup API',
