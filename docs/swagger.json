@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "Meetup API Information"
   },
-  "host": "dpg-cpqmgiaj1k6c73bj917g-a",
+  "host": "https://modsen-meetup-task.onrender.com",
   "basePath": "/",
   "tags": [
     {
