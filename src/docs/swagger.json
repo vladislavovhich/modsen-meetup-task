@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "Meetup API Information"
   },
-  "host": "modsen-meetup-task.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
@@ -22,8 +22,8 @@
     }
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "consumes": [
     "application/json"
@@ -47,11 +47,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -71,24 +68,13 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "tags": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UpdateMeetup"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -108,12 +94,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -166,22 +146,19 @@
             "type": "string"
           },
           {
-            "name": "offset",
+            "name": "pageSize",
             "in": "query",
             "type": "string"
           },
           {
-            "name": "limit",
+            "name": "page",
             "in": "query",
             "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -195,24 +172,13 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "tags": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateMeetup"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -232,11 +198,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -251,17 +214,18 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateTag"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -281,12 +245,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -298,8 +256,8 @@
         ],
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -308,15 +266,18 @@
           "Tag"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateTag"
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -332,21 +293,13 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/LoginUser"
             }
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -357,12 +310,18 @@
           "Auth"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -379,163 +338,135 @@
           }
         }
       }
+    },
+    "/api/auth/refresh": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "definitions": {
-    "Tag": {
+    "CreateMeetup": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
-        },
         "name": {
           "type": "string",
-          "example": "React.js"
-        },
-        "user": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "number",
-              "example": 1
-            },
-            "email": {
-              "type": "string",
-              "example": "example@email.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "password_example"
-            },
-            "role": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "number",
-                  "example": 1
-                },
-                "name": {
-                  "type": "string",
-                  "example": "student"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Meetup": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
-        },
-        "name": {
-          "type": "string",
-          "example": "Meetup"
-        },
-        "description": {
-          "type": "string",
-          "example": "JS Backend"
+          "example": "Meetup 1"
         },
         "place": {
           "type": "string",
-          "example": "Vitebsk"
+          "example": "Some place"
         },
         "time": {
           "type": "string",
-          "example": "2024-04-22T21:00:00.000Z"
+          "example": "2024-12-12T09:00:00.000Z"
+        },
+        "description": {
+          "type": "string",
+          "example": "text"
         },
         "tags": {
           "type": "array",
+          "example": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
           "items": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "number",
-                "example": 1
-              },
-              "name": {
-                "type": "string",
-                "example": "React.js"
-              },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number",
-                    "example": 1
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "example@email.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password_example"
-                  },
-                  "role": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                        "example": 1
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "student"
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "type": "number"
           }
         }
       }
     },
-    "User": {
+    "UpdateMeetup": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
+        "name": {
+          "type": "string",
+          "example": "Meetup 1"
         },
+        "place": {
+          "type": "string",
+          "example": "Some place"
+        },
+        "time": {
+          "type": "string",
+          "example": "2024-12-12T09:00:00.000Z"
+        },
+        "description": {
+          "type": "string",
+          "example": "text"
+        },
+        "tags": {
+          "type": "array",
+          "example": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "CreateTag": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "tag 1"
+        }
+      }
+    },
+    "UpdateTag": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "tag 1"
+        }
+      }
+    },
+    "LoginUser": {
+      "type": "object",
+      "properties": {
         "email": {
           "type": "string",
-          "example": "example@email.com"
+          "example": "example@gmail.com"
         },
         "password": {
           "type": "string",
-          "example": "password_example"
-        },
-        "role": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "number",
-              "example": 1
-            },
-            "name": {
-              "type": "string",
-              "example": "student"
-            }
-          }
+          "example": "password"
         }
       }
     },
-    "Role": {
+    "RegisterUser": {
       "type": "object",
       "properties": {
-        "id": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        },
+        "roleId": {
           "type": "number",
           "example": 1
-        },
-        "name": {
-          "type": "string",
-          "example": "student"
         }
       }
     }

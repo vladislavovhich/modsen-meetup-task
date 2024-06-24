@@ -1,3 +1,5 @@
+const {StatusCodes} = require("http-status-codes")
+
 const validation = (schema, property) => { 
     return (req, res, next) => { 
         const { error } = schema.validate(req[property]); 
@@ -8,11 +10,10 @@ const validation = (schema, property) => {
         } else { 
             const { details } = error; 
             const message = details.map(i => i.message).join(',');
-
-            console.log(error)
             
-            res.status(400).json({ error: message }) 
+            res.status(StatusCodes.BAD_REQUEST).json({ error: message }) 
         } 
     } 
 } 
+
 module.exports = validation

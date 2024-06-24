@@ -48,7 +48,7 @@ const MeetupService = {
         let meetups = await MeetupModel.findAll({
             include: TagModel,
             order: getMeetupsDto.sortFields,
-            limit: getMeetupsDto.limit,
+            limit: getMeetupsDto.pageSize,
             offset: getMeetupsDto.offset,
             where: getMeetupsDto.filterFields
         })

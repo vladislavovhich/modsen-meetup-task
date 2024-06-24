@@ -1,6 +1,9 @@
-class GetMeetupsDto {
+const PaginationDto = require("./PaginationDto")
+
+class GetMeetupsDto extends PaginationDto{
     constructor(data) {
-        this.offset = data.offset
+        super(data)
+        
         this.sortFields = data.sortFields
         this.filterFields = data.filterFields
     }

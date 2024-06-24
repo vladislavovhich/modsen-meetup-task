@@ -32,11 +32,11 @@ const schemas = {
         description: Joi.string().min(1).allow(null),
         place: Joi.string().min(1).max(50).allow(null),
         time: Joi.date().allow(null),
-        offset: Joi.number().integer().min(0).allow(null),
-        limit: Joi.when('offset', {
+        page: Joi.number().integer().min(1).allow(null),
+        pageSize: Joi.when('page', {
             is: Joi.exist().not(null),
-            then: Joi.number().integer().min(0).required(),
-            otherwise: Joi.number().integer().min(0).allow(null)
+            then: Joi.number().integer().min(1).required(),
+            otherwise: Joi.number().integer().min(1).allow(null)
         })
     })
 }

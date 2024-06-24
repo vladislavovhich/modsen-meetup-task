@@ -17,4 +17,6 @@ router.post("/register",
 
 router.get("/logout", passport.authenticate('jwt', { session: false }), controllers.logout)
 
+router.get("/refresh",  passport.authenticate('jwt', { session: false }), controllers.refreshToken)
+
 module.exports = router
