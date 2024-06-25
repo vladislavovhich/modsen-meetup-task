@@ -1,4 +1,4 @@
-const PaginationDto = require("./PaginationDto")
+const PaginationDto = require("../PaginationDto")
 
 class GetMeetupsDto extends PaginationDto{
     constructor(data) {

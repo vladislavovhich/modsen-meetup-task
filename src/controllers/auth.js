@@ -1,8 +1,8 @@
 const {StatusCodes} = require('http-status-codes')
 
 const UserService = require("../services/UserService")
-const CreateUserDto = require('../dto/CreateUserDto')
-const LoginUserDto = require('../dto/LoginUserDto')
+const CreateUserDto = require('../dto/user/CreateUserDto')
+const LoginUserDto = require('../dto/user/LoginUserDto')
 
 module.exports = {
     register: async (req, res) => {
