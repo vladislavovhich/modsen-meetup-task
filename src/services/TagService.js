@@ -2,7 +2,7 @@ const TagModel = require('../models/tag')
 
 const TagService = {
     create: async (createTagDto) => {
-        let tag = await TagModel.create(createTagDto)
+        const tag = await TagModel.create(createTagDto)
 
         await tag.setUser(createTagDto.user)
 
@@ -10,7 +10,7 @@ const TagService = {
     },
 
     update: async (updateTagDto) => {
-        let tag = await TagService.get(updateTagDto.id)
+        const tag = await TagService.get(updateTagDto.id)
 
         if (!tag) {
             return null
@@ -23,7 +23,7 @@ const TagService = {
     },
 
     delete: async (id) => {
-        let tag = await TagService.get(id)
+        const tag = await TagService.get(id)
 
         if (!tag) {
             return null
@@ -35,13 +35,13 @@ const TagService = {
     },
 
     get: async (id) => {
-        let tag = await TagModel.findOne({where: id})
+        const tag = await TagModel.findOne({where: id})
 
         return tag
     },
 
     getAll: async () => {
-        let tags = await TagModel.findAll()
+        const tags = await TagModel.findAll()
 
         return tags
     }

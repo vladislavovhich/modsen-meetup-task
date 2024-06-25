@@ -9,7 +9,7 @@ const schemas = {
         description: Joi.string().min(1).max(65535).required(),
         place: Joi.string().min(1).max(50).required(),
         time: Joi.date().required(),
-        tags: Joi.array().items(Joi.number()).allow(null)
+        tags: Joi.array().items(Joi.string()).allow(null)
     }),
     query:  Joi.object({
         id: Joi.number().min(1).required()  
@@ -32,11 +32,11 @@ const schemas = {
         description: Joi.string().min(1).allow(null),
         place: Joi.string().min(1).max(50).allow(null),
         time: Joi.date().allow(null),
-        offset: Joi.number().integer().min(0).allow(null),
-        limit: Joi.when('offset', {
+        page: Joi.number().integer().min(1).allow(null),
+        pageSize: Joi.when('page', {
             is: Joi.exist().not(null),
-            then: Joi.number().integer().min(0).required(),
-            otherwise: Joi.number().integer().min(0).allow(null)
+            then: Joi.number().integer().min(1).required(),
+            otherwise: Joi.number().integer().min(1).allow(null)
         })
     })
 }
