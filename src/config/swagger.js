@@ -32,14 +32,14 @@ const swaggerDocument = {
             place: "Some place",
             time: "2024-12-12T09:00:00.000Z",
             description: "text",
-            tags: [1, 2, 3, 4, 5],
+            tags: ['React', 'backend'],
         },
         UpdateMeetup: {
             name: "Meetup 1",
             place: "Some place",
             time: "2024-12-12T09:00:00.000Z",
             description: "text",
-            tags: [1, 2, 3, 4, 5],
+            tags: ['React', 'backend'],
         },
         CreateTag: {
             name: "tag 1"

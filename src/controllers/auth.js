@@ -15,7 +15,7 @@ module.exports = {
         const user = await UserService.register(new CreateUserDto(req.body))
 
         if (!user) {
-            return res.status(StatusCodes.OK).json({
+            return res.status(StatusCodes.BAD_REQUEST).json({
                 message: `User already exists`
             })
         }

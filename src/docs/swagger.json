@@ -376,14 +376,11 @@
         "tags": {
           "type": "array",
           "example": [
-            1,
-            2,
-            3,
-            4,
-            5
+            "React",
+            "backend"
           ],
           "items": {
-            "type": "number"
+            "type": "string"
           }
         }
       }
@@ -410,14 +407,11 @@
         "tags": {
           "type": "array",
           "example": [
-            1,
-            2,
-            3,
-            4,
-            5
+            "React",
+            "backend"
           ],
           "items": {
-            "type": "number"
+            "type": "string"
           }
         }
       }

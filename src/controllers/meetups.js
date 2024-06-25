@@ -1,6 +1,6 @@
-const CreateMeetupDto = require('../dto/CreateMeetupDto')
-const GetMeetupsDto = require('../dto/GetMeetupsDto')
-const UpdateMeetupDto = require('../dto/UpdateMeetupDto')
+const CreateMeetupDto = require('../dto/meetup/CreateMeetupDto')
+const GetMeetupsDto = require('../dto/meetup/GetMeetupsDto')
+const UpdateMeetupDto = require('../dto/meetup/UpdateMeetupDto')
 
 const MeetupService = require('../services/MeetupService')
 
@@ -17,7 +17,7 @@ module.exports = {
         const user = await req.user
         const createMeetupDto = new CreateMeetupDto({user, ...req.body})
 
-        createMeetupDto.tags = !!req.body.tags ? req.body.tags.map(tag => parseInt(tag)) : []
+        createMeetupDto.tags = !!req.body.tags ? req.body.tags : []
 
         const meetup = await MeetupService.create(createMeetupDto)
         
@@ -38,7 +38,7 @@ module.exports = {
         const meetup = await MeetupService.update(updateMeetupDto)
 
         if (!meetup) {
-            res.status(StatusCodes.BAD_REQUEST).json({message: "Meetup not found"})
+            res.status(StatusCodes.NOT_FOUND).json({message: "Meetup not found"})
         }
 
         res.status(StatusCodes.OK).json(meetup)
@@ -50,7 +50,7 @@ module.exports = {
         const result = await MeetupService.delete(parseInt(req.params.id))
 
         if (!result) {
-            res.status(StatusCodes.BAD_REQUEST).json({message: "Meetup not found"})
+            res.status(StatusCodes.NOT_FOUND).json({message: "Meetup not found"})
         }
 
         res.send(StatusCodes.OK) 
@@ -62,7 +62,7 @@ module.exports = {
         const meetup = await MeetupService.get(parseInt(req.params.id))
 
         if (!meetup) {
-            res.status(StatusCodes.BAD_REQUEST).json({message: "Meetup not found"})
+            res.status(StatusCodes.NOT_FOUND).json({message: "Meetup not found"})
         }
 
         res.status(StatusCodes.OK).json({meetup})

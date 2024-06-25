@@ -9,7 +9,7 @@ const schemas = {
         description: Joi.string().min(1).max(65535).required(),
         place: Joi.string().min(1).max(50).required(),
         time: Joi.date().required(),
-        tags: Joi.array().items(Joi.number()).allow(null)
+        tags: Joi.array().items(Joi.string()).allow(null)
     }),
     query:  Joi.object({
         id: Joi.number().min(1).required()  
