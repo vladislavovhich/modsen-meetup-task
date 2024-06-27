@@ -1,7 +1,10 @@
+import { Request, Response, NextFunction } from "express";
+import Joi from "joi"
+
 const {StatusCodes} = require("http-status-codes")
 
-const validation = (schema, property) => { 
-    return (req, res, next) => { 
+export const isValid = <T extends Request<any, any, any, any>>(schema: Joi.Schema, property: keyof T) => { 
+    return (req: T, res: Response, next: NextFunction) => { 
         const { error } = schema.validate(req[property]); 
         const valid = error == null; 
         
@@ -15,5 +18,3 @@ const validation = (schema, property) => {
         } 
     } 
 } 
-
-module.exports = validation

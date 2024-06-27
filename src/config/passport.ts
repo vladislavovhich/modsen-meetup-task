@@ -1,7 +1,8 @@
-const { Strategy } = require("passport-jwt")
-const User = require("../models/user")
+import { Strategy } from "passport-jwt"
+import User from "../models/user"
+import { Request } from "express"
 
-const cookieExtractor = req => {
+const cookieExtractor = (req: Request) => {
     let jwt = null 
 
     if (req && req.cookies) {
@@ -32,4 +33,4 @@ const jwtStrategy = new Strategy(opts, async (payload, done) => {
     }
 })
 
-module.exports = jwtStrategy
+export default jwtStrategy

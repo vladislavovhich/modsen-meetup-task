@@ -1,3 +1,4 @@
+
 const generateSwagger = require("swagger-autogen")();
 require('dotenv').config()
    
@@ -60,6 +61,6 @@ const swaggerDocument = {
 }
 
 const swaggerFile= "../docs/swagger.json";
-const apiRouteFile= ["../../app.js"]
+const apiRouteFile= ["../../app.ts"]
 
 generateSwagger(swaggerFile, apiRouteFile, swaggerDocument);
