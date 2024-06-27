@@ -1,33 +1,42 @@
-const TagService = require("../services/TagService")
-const CreateTagDto = require("../dto/tag/CreateTagDto")
-const UpdateTagDto = require("../dto/tag/CreateTagDto")
+import {Request, Response} from "express"
+import TagService from "../services/tag.service"
+import { CreateTagDto } from "../dto/tag/create-tag.dto"
+import { UpdateTagDto } from "../dto/tag/update-tag.dto"
+import { StatusCodes } from "http-status-codes"
+import { CreateTagRequest, TagIdRequest, UpdateTagRequest } from "../schemas/tag.schemas"
+import User from "../models/user"
 
-const {StatusCodes} = require('http-status-codes')
-
-module.exports = {
-    create: async (req, res) => {
+const TagController = {
+    create: async (req: CreateTagRequest, res: Response) => {
         // #swagger.tags = ['Tag']
         /*  #swagger.parameters['body'] = {
             in: 'body',
             schema: { $ref: '#/definitions/CreateTag' }
         } */
 
-        const user = await req.user
-        const createTagDto = new CreateTagDto({user, ...req.body})
+        const user = (await req.user) as User
+
+        const createTagDto = new CreateTagDto({
+            user: user, 
+            name: req.body.name
+        })
 
         const tag = await TagService.create(createTagDto)
 
         res.status(StatusCodes.OK).json({tag})
     },
 
-    update: async (req, res) => {
+    update: async (req: UpdateTagRequest, res: Response) => {
         // #swagger.tags = ['Tag']
         /*  #swagger.parameters['body'] = {
             in: 'body',
             schema: { $ref: '#/definitions/UpdateTag' }
         } */
 
-        const tag = await TagService.update(new UpdateTagDto({id: parseInt(req.params.id), ...req.body}))
+        const tag = await TagService.update(new UpdateTagDto({
+            id: parseInt(req.params.id), 
+            name: req.body.name
+        }))
 
         if (!tag) {
             res.status(StatusCodes.NOT_FOUND).json({message: "Tag not found"})
@@ -36,7 +45,7 @@ module.exports = {
         res.status(StatusCodes.OK).json({tag})
     },
 
-    delete: async (req, res) => {
+    delete: async (req: TagIdRequest, res: Response) => {
         // #swagger.tags = ['Tag']
         
         const result = await TagService.delete(parseInt(req.params.id))
@@ -48,7 +57,7 @@ module.exports = {
         res.send(StatusCodes.OK) 
     },
 
-    get: async (req, res) => {
+    get: async (req: TagIdRequest, res: Response) => {
         // #swagger.tags = ['Tag']
 
         const tag = await TagService.get(parseInt(req.params.id))
@@ -60,7 +69,7 @@ module.exports = {
         res.status(StatusCodes.OK).json({tag})
     },
 
-    getAll: async (req, res) => {
+    getAll: async (req: Request, res: Response) => {
         // #swagger.tags = ['Tag']
         
         const tags = await TagService.getAll()
@@ -69,3 +78,4 @@ module.exports = {
     }
 }
 
+export default TagController

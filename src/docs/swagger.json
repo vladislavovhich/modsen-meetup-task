@@ -104,58 +104,6 @@
           "Meetup"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "nameSort",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "descriptionSort",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "timeSort",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "placeSort",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "time",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "place",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          }
-        ],
         "responses": {
           "default": {
             "description": ""

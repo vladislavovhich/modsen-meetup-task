@@ -1,11 +1,12 @@
-const {StatusCodes} = require('http-status-codes')
+import { Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
+import UserService from '../services/user.service'
+import { CreateUserDto } from '../dto/user/create-user.dto'
+import { LoginUserDto} from '../dto/user/login-user.dto'
+import { CreateUserRequest, LoginUserRequest } from '../schemas/user.schemas'
 
-const UserService = require("../services/UserService")
-const CreateUserDto = require('../dto/user/CreateUserDto')
-const LoginUserDto = require('../dto/user/LoginUserDto')
-
-module.exports = {
-    register: async (req, res) => {
+export const AuthController = {
+    register: async (req: CreateUserRequest , res: Response) => {
         // #swagger.tags = ['Auth']
         /*  #swagger.parameters['body'] = {
             in: 'body',
@@ -23,7 +24,7 @@ module.exports = {
         res.status(StatusCodes.OK).json(user)
     },
 
-    login: async (req, res) => {
+    login: async (req: LoginUserRequest, res: Response) => {
         // #swagger.tags = ['Auth']
         /*  #swagger.parameters['body'] = {
             in: 'body',
@@ -46,7 +47,7 @@ module.exports = {
         res.status(StatusCodes.OK).send({result})
     },
 
-    refreshToken: async (req, res) => {
+    refreshToken: async (req: Request, res: Response) => {
         // #swagger.tags = ['Auth']
         
         const refreshToken = req.cookies['jwt-refresh']
@@ -65,7 +66,7 @@ module.exports = {
         })
     },
 
-    logout: async (req, res) => {
+    logout: async (req: Request, res: Response) => {
         // #swagger.tags = ['Auth']
         
         res.clearCookie('jwt')

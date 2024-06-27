@@ -1,11 +1,18 @@
-const UserModel = require('../models/user')
-const RoleModel = require('../models/role')
+import UserModel from "../models/user"
+import RoleModel from "../models/role"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+import { ICreateUserDto } from "../dto/user/create-user.dto"
+import { ILoginUserDto } from "../dto/user/login-user.dto"
+
+interface ITokens {
+    accessToken: string
+    refreshToken: string
+}
 
 const UserService = {
-    register: async (createUserDto) => {
+    register: async (createUserDto: ICreateUserDto): Promise<UserModel | null> => {
         let role = await RoleModel.findByPk(createUserDto.roleId)
 
         let userExist = await UserService.findByEmail(createUserDto.email)
@@ -23,11 +30,11 @@ const UserService = {
         return user
     },
 
-    findByEmail: async (email) => {
+    findByEmail: async (email: string): Promise<UserModel | null> => {
         return await UserModel.findOne({where: {email}})
     },
 
-    authorize: async (loginUserDto) => {
+    authorize: async (loginUserDto: ILoginUserDto): Promise<ITokens | null> => {
         const user = await UserService.findByEmail(loginUserDto.email)
 
         if (!user) {
@@ -45,24 +52,24 @@ const UserService = {
         return tokens
     },
 
-    getTokens: async (userId) => {
+    getTokens: async (userId: number): Promise<ITokens | null> => {
         const accessToken = jwt.sign({id: userId}, "secret", {expiresIn: "1d"})
         const refreshToken = jwt.sign({ id: userId }, "refresh_secret", { expiresIn: '7d' })
 
         return {accessToken, refreshToken}
     },
 
-    refreshToken: async (refreshToken, callback) => {
+    refreshToken: async (refreshToken: string, callback: (tokens: ITokens | null) => void): Promise<void> => {
         jwt.verify(refreshToken, "refresh_secret", async (err, user) => {
             if (err) {
                 return callback(null)
             }
             
-            const tokens = await UserService.getTokens(user.id)
+            const tokens = await UserService.getTokens((user as UserModel).id)
 
             return callback(tokens)
         });
     }
 }
 
-module.exports = UserService
+export default UserService
