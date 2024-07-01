@@ -12,6 +12,8 @@ export const AuthController = {
             in: 'body',
             schema: { $ref: '#/definitions/RegisterUser' }
         } */
+        // #swagger.responses[200] = { description: 'User successfully registered' }
+        // #swagger.responses[400] = { description: 'There is user that has the same login' }
 
         const user = await UserService.register(new CreateUserDto(req.body))
 
@@ -30,6 +32,8 @@ export const AuthController = {
             in: 'body',
             schema: { $ref: '#/definitions/LoginUser' }
         } */
+        // #swagger.responses[200] = { description: 'User successfully logged in' }
+        // #swagger.responses[400] = { description: 'Incorrect login or passowrd' }
 
         const loginUserDto = new LoginUserDto({email: req.body.email, password: req.body.password})
 
@@ -49,6 +53,9 @@ export const AuthController = {
 
     refreshToken: async (req: Request, res: Response) => {
         // #swagger.tags = ['Auth']
+        // #swagger.responses[200] = { description: 'Tokens are successfully refreshed' }
+        // #swagger.responses[400] = { description: 'No token specified' }
+
         
         const refreshToken = req.cookies['jwt-refresh']
 
@@ -68,6 +75,8 @@ export const AuthController = {
 
     logout: async (req: Request, res: Response) => {
         // #swagger.tags = ['Auth']
+        // #swagger.responses[200] = { description: 'User successfully logged out' }
+
         
         res.clearCookie('jwt')
         res.clearCookie("jwt-refresh")

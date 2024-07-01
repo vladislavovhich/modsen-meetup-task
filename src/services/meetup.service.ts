@@ -6,6 +6,7 @@ import UserModel from "../models/user"
 import { ICreateMeetupDto } from "../dto/meetup/create-meetup.dto"
 import { IUpdateMeetupDto } from "../dto/meetup/update-meetup.dto"
 import { IGetMeetupsDto } from "../dto/meetup/get-meetups.dto"
+import { SubsMeetupDto } from "../dto/meetup/subs-meetup.dto"
 
 const MeetupService = {
     create: async (createMeetupDto: ICreateMeetupDto): Promise<MeetupModel | null> => {
@@ -58,7 +59,7 @@ const MeetupService = {
     },
 
     get: async (id: number): Promise<MeetupModel | null> => {
-        const meetup = await MeetupModel.findOne({where: {id}})
+        const meetup = await MeetupModel.findOne({where: {id}  })
 
         return meetup
     },
@@ -89,6 +90,47 @@ const MeetupService = {
         }
 
         return tags
+    },
+
+    subsribe: async (subsMeetupDto: SubsMeetupDto) => {
+        const meetup = await MeetupService.get(subsMeetupDto.meetupId)
+        const user = subsMeetupDto.user
+
+        
+        if (!meetup) {
+            return null
+        }
+
+        const hasMeetup = await user.hasUserMeetup(meetup)
+
+        if (!hasMeetup) {
+            await user.addUserMeetup(meetup)
+        }
+
+        return meetup
+    },
+
+    unsubscribe: async (subsMeetupDto: SubsMeetupDto) => {
+        const meetup = await MeetupService.get(subsMeetupDto.meetupId)
+        const user = subsMeetupDto.user
+        
+        if (!meetup) {
+            return null
+        }
+
+        const hasUser = await meetup.hasMeetupUser(user)
+
+        if (!hasUser) {
+            return null
+        }
+
+        const hasMeetup = await user.hasUserMeetup(meetup)
+
+        if (hasMeetup) {
+            await user.removeUserMeetup(meetup)
+        }
+
+        return meetup
     }
 
 }

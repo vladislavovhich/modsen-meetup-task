@@ -6,6 +6,7 @@ import { GetMeetupsDto, Fields } from '../dto/meetup/get-meetups.dto'
 import { CreateMeetupRequest, UpdateMeetupRequest, GetAllMeetupsRequest, MeetupIdRequest } from '../schemas/meetup.schemas'
 import MeetupService from '../services/meetup.service'
 import User from '../models/user'
+import { SubsMeetupDto } from '../dto/meetup/subs-meetup.dto'
 
 const MeetupController = {
     create: async (req: CreateMeetupRequest, res: Response) => {
@@ -14,6 +15,7 @@ const MeetupController = {
             in: 'body',
             schema: { $ref: '#/definitions/CreateMeetup' }
         } */
+        // #swagger.responses[200] = { description: 'Meetup successfully created' }
 
         const user = await req.user
 
@@ -39,6 +41,9 @@ const MeetupController = {
             in: 'body',
             schema: { $ref: '#/definitions/UpdateMeetup' }
         } */
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Meetup successfully updated' }
+        // #swagger.responses[404] = { description: 'Meetup not found' }
 
         const user = await req.user
 
@@ -65,6 +70,9 @@ const MeetupController = {
     
     delete: async (req: MeetupIdRequest, res: Response) => {
         // #swagger.tags = ['Meetup']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Meetup successfully deleted' }
+        // #swagger.responses[404] = { description: 'Meetup not found' }
 
         const result = await MeetupService.delete(parseInt(req.params.id))
 
@@ -75,8 +83,49 @@ const MeetupController = {
         res.send(StatusCodes.OK) 
     },
 
+    subscribe: async (req: MeetupIdRequest, res: Response) => {
+        // #swagger.tags = ['Meetup']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Successfully subscribed on Meetup' }
+        // #swagger.responses[404] = { description: 'Meetup not found' }
+
+        const user = await req.user
+        const subsMeetupDto = new SubsMeetupDto({meetupId: parseInt(req.params.id), user: user as User})
+
+        const result = await MeetupService.subsribe(subsMeetupDto)
+
+        if (!result) {
+            res.status(StatusCodes.NOT_FOUND).json({message: "Meetup not found"})
+            return
+        }
+
+        res.sendStatus(StatusCodes.OK)
+    },
+
+    unsubscribe: async (req: MeetupIdRequest, res: Response) => {
+        // #swagger.tags = ['Meetup']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Successfully unsubscribed on Meetup' }
+        // #swagger.responses[400] = { description: 'Meetup not found or user is not subscribed to the Meetup' }
+
+        const user = await req.user
+        const subsMeetupDto = new SubsMeetupDto({meetupId: parseInt(req.params.id), user: user as User})
+
+        const result = await MeetupService.unsubscribe(subsMeetupDto)
+        
+        if (!result) {
+            res.status(StatusCodes.BAD_REQUEST).json({message: "Cant't unsubcribe"})
+            return
+        }
+
+        res.send(StatusCodes.OK)
+    },
+
     get: async (req: MeetupIdRequest, res: Response) => {
         // #swagger.tags = ['Meetup']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Meetup' }
+        // #swagger.responses[404] = { description: 'Meetup not found' }
 
         const meetup = await MeetupService.get(parseInt(req.params.id))
 
@@ -89,8 +138,18 @@ const MeetupController = {
 
     getAll: async (req: GetAllMeetupsRequest, res: Response) => {
         // #swagger.tags = ['Meetup']
-    
-        
+        // #swagger.parameters['nameSort'] = { in: 'query', description: 'nameSort [ASC OR DESC]', required: false, type: 'string' }
+        // #swagger.parameters['descriptionSort'] = { in: 'query', description: 'descriptionSort [ASC OR DESC]', required: false, type: 'string' }
+        // #swagger.parameters['timeSort'] = { in: 'query', description: 'timeSort [ASC OR DESC] ', required: false, type: 'string' }
+        // #swagger.parameters['placeSort'] = { in: 'query', description: 'placeSort [ASC OR DESC]', required: false, type: 'string' }
+        // #swagger.parameters['name'] = { in: 'query', description: 'name to filter', required: false, type: 'string' }
+        // #swagger.parameters['description'] = { in: 'query', description: 'description to filter', required: false, type: 'string' }
+        // #swagger.parameters['time'] = { in: 'query', description: 'time to filter', required: false, type: 'string' }
+        // #swagger.parameters['place'] = { in: 'query', description: 'place to filter', required: false, type: 'string' }
+        // #swagger.parameters['pageSize'] = { in: 'query', description: 'pageSize', required: false, type: 'number' }
+        // #swagger.parameters['page'] = { in: 'query', description: 'page number', required: false, type: 'number' }
+        // #swagger.responses[200] = { description: 'Meetups list' }
+      
         let sortFields: Fields = [
             ["nameSort", req.query.nameSort], 
             ["descriptionSort", req.query.descriptionSort], 
