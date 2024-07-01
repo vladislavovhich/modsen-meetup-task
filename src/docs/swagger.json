@@ -43,12 +43,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Meetup"
+          },
+          "404": {
+            "description": "Meetup not found"
           }
         }
       },
@@ -62,7 +66,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           },
           {
             "name": "body",
@@ -73,8 +78,11 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Meetup successfully  "
+          },
+          "404": {
+            "description": "Meetup not found"
           }
         }
       },
@@ -88,12 +96,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Meetup successfully  "
+          },
+          "404": {
+            "description": "Meetup not found"
           }
         }
       }
@@ -104,9 +116,81 @@
           "Meetup"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "nameSort",
+            "in": "query",
+            "description": "nameSort [ASC OR DESC]",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "descriptionSort",
+            "in": "query",
+            "description": "descriptionSort [ASC OR DESC]",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "timeSort",
+            "in": "query",
+            "description": "timeSort [ASC OR DESC] ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "placeSort",
+            "in": "query",
+            "description": "placeSort [ASC OR DESC]",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name to filter",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "description": "description to filter",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "description": "time to filter",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "place",
+            "in": "query",
+            "description": "place to filter",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "pageSize",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "type": "number"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Meetups list"
           }
         }
       },
@@ -125,8 +209,58 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Meetup successfully  "
+          }
+        }
+      }
+    },
+    "/api/meetups/subscribe/{id}": {
+      "post": {
+        "tags": [
+          "Meetup"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully   on Meetup"
+          },
+          "404": {
+            "description": "Meetup not found"
+          }
+        }
+      }
+    },
+    "/api/meetups/unsubscribe/{id}": {
+      "post": {
+        "tags": [
+          "Meetup"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully   on Meetup"
+          },
+          "400": {
+            "description": "Meetup not found or user is not subscribed to the Meetup"
           }
         }
       }
@@ -142,12 +276,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Tag is found"
+          },
+          "400": {
+            "description": "Can not find Tag"
           }
         }
       },
@@ -161,7 +299,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           },
           {
             "name": "body",
@@ -172,8 +311,11 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Tag is successfully  "
+          },
+          "400": {
+            "description": "Can not update Tag"
           }
         }
       },
@@ -187,12 +329,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Tag is successfully  "
+          },
+          "400": {
+            "description": "Can not delete Tag"
           }
         }
       }
@@ -204,8 +350,8 @@
         ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Tags list"
           }
         }
       },
@@ -224,8 +370,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Tag is successfully  "
           }
         }
       }
@@ -246,8 +392,11 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "User successfully logged in"
+          },
+          "400": {
+            "description": "Incorrect login or passowrd"
           }
         }
       }
@@ -268,8 +417,11 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "User successfully  "
+          },
+          "400": {
+            "description": "There is user that has the same login"
           }
         }
       }
@@ -281,8 +433,8 @@
         ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "User successfully logged out"
           }
         }
       }
@@ -294,8 +446,11 @@
         ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Tokens are successfully refreshed"
+          },
+          "400": {
+            "description": "No token specified"
           }
         }
       }

@@ -13,6 +13,8 @@ const TagController = {
             in: 'body',
             schema: { $ref: '#/definitions/CreateTag' }
         } */
+        // #swagger.responses[200] = { description: 'Tag is successfully created' }
+
 
         const user = (await req.user) as User
 
@@ -32,6 +34,9 @@ const TagController = {
             in: 'body',
             schema: { $ref: '#/definitions/UpdateTag' }
         } */
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Tag is successfully updated' }
+        // #swagger.responses[400] = { description: 'Can not update Tag' }
 
         const tag = await TagService.update(new UpdateTagDto({
             id: parseInt(req.params.id), 
@@ -47,6 +52,10 @@ const TagController = {
 
     delete: async (req: TagIdRequest, res: Response) => {
         // #swagger.tags = ['Tag']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Tag is successfully deleted' }
+        // #swagger.responses[400] = { description: 'Can not delete Tag' }
+
         
         const result = await TagService.delete(parseInt(req.params.id))
 
@@ -59,6 +68,9 @@ const TagController = {
 
     get: async (req: TagIdRequest, res: Response) => {
         // #swagger.tags = ['Tag']
+        // #swagger.parameters['id'] = { description: 'ID' }
+        // #swagger.responses[200] = { description: 'Tag is found' }
+        // #swagger.responses[400] = { description: 'Can not find Tag' }
 
         const tag = await TagService.get(parseInt(req.params.id))
 
@@ -71,6 +83,7 @@ const TagController = {
 
     getAll: async (req: Request, res: Response) => {
         // #swagger.tags = ['Tag']
+        // #swagger.responses[200] = { description: 'Tags list' }
         
         const tags = await TagService.getAll()
 

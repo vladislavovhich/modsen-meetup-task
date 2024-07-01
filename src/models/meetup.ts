@@ -14,6 +14,7 @@ class Meetup extends Model {
     declare setTags: (tags: (Tag | null)[] | null) => Promise<void>
     declare addTags: (tags: (Tag | null)[] | null) => Promise<void>
     declare setUser: (user: User | null) => Promise<void>
+    declare hasMeetupUser: (user: User) => Promise<boolean>
 }
 
 Meetup.init({
@@ -39,13 +40,17 @@ Meetup.init({
     timestamps: false,
 })
 
-Meetup.belongsToMany(Tag, { through: 'meetup_tag', as: 'tags' })
-Tag.belongsToMany(Meetup, { through: 'meetup_tag', as: 'meetups' })
+Meetup.belongsToMany(Tag, { through: 'meetup_tag'})
+Tag.belongsToMany(Meetup, { through: 'meetup_tag'})
+
+Meetup.belongsToMany(User, { through: 'meetup_user', as: 'MeetupUsers' })
+User.belongsToMany(Meetup, { through: 'meetup_user', as: 'UserMeetups' })
 
 Meetup.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user',
 });
+
 User.hasMany(Meetup, {
     foreignKey: 'userId',
     as: 'meetups',

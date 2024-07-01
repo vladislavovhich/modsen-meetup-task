@@ -8,6 +8,7 @@ import { GetAllMeetupsSchema } from '../dto/meetup/get-meetups.dto';
 import { checkRole, ownsResource } from '../middleware/user';
 import { QueryIdSchema } from '../dto/tag/create-tag.dto';
 import Meetup from '../models/meetup';
+import { SubsMeetupSchema } from '../dto/meetup/subs-meetup.dto';
 
 const router: Router = express.Router()
 
@@ -17,11 +18,11 @@ router.get("/:id",
 
 router.get("/", 
     isValid(GetAllMeetupsSchema, 'params'),
-    MeetupController.get)
+    MeetupController.getAll)
 
 router.put("/:id", 
     passport.authenticate('jwt', { session: false }), 
-    isValid(UpdateMeetupSchema, 'params'),
+    isValid(QueryIdSchema, 'params'),
     checkRole([2]),
     ownsResource(Meetup),
     isValid(UpdateMeetupSchema, 'body'),
@@ -32,6 +33,16 @@ router.post("/",
     checkRole([2]),
     isValid(CreateMeetupSchema, 'body'), 
     MeetupController.create)
+
+router.post("/subscribe/:id", 
+    passport.authenticate('jwt', { session: false }), 
+    isValid(SubsMeetupSchema, 'body'), 
+    MeetupController.subscribe)
+
+router.post("/unsubscribe/:id", 
+    passport.authenticate('jwt', { session: false }), 
+    isValid(SubsMeetupSchema, 'body'), 
+    MeetupController.unsubscribe)
 
 router.delete("/:id", 
     passport.authenticate('jwt', { session: false }), 

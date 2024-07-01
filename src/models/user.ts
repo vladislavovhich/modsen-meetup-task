@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize'
 import sequelize from '../config/db'
 import Role from './role'
+import Meetup from './meetup'
 
 class User extends Model {
     declare id: number
@@ -9,6 +10,9 @@ class User extends Model {
     declare roleId: number
 
     declare setRole: (role: Role | null) => Promise<void>
+    declare removeUserMeetup: (meetup: Meetup | number) => Promise<void>
+    declare hasUserMeetup: (meetup: Meetup | number) => Promise<boolean>
+    declare addUserMeetup: (meetup: Meetup | Meetup[], options?: any) => Promise<void>
 }
 
 User.init(
