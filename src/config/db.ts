@@ -7,5 +7,3 @@ const db = new Sequelize(process.env.DB_NAME || "", process.env.DB_USER || "", p
 })
 
 export default db
-
-

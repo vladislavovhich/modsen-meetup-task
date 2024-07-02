@@ -4,6 +4,9 @@ import app from "./app"
 import User from "./src/models/user"
 import Tag from "./src/models/tag"
 import Meetup from './src/models/meetup'
+import "dotenv/config"
+
+const PORT = process.env.NODE_DOCKER_PORT || 8080
 
 db.sync({ force: false }).then(async () => {
     let roles: number = await Role.count()
@@ -15,5 +18,5 @@ db.sync({ force: false }).then(async () => {
         ])
     }
     
-    app.listen(3000)
+    app.listen(PORT)
 })
